@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <script type="text/javascript" src="../js/base.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/qunit/git/qunit.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="http://code.jquery.com/qunit/git/qunit.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+
+module("Helper funcs");
+
+test("getImgTag", function() {
+  equal(getImgTag('image.png', 'Message'), '<img src="image.png" alt="Message" title="Message" />', "generic call");
+});
+
+test("$_GET", function() {
+  var testString = "?tableName=indv&columnName0=fname&columnValue0='Bill'&whereClause=indv_id+%3D+1&expectedCount=1";
+  equal($_GET('tableName', testString), "indv", "first parameter");
+  equal($_GET('expectedCount', testString), "1", "last parameter");
+  equal($_GET('columnValue0', testString), "'Bill'", "parameter with '");
+  equal($_GET('whereClause', testString), "indv_id = 1", "parameter with spaces");
+  equal($_GET('fake', testString), undefined, "parameter not found");
+});
+
+test("Update value and size", function() {
+  $("body").append('<textarea id="testme" />');
+  var multiRowText = "blah\r\nblah\r\nblah";
+  updateValue('testme', multiRowText);
+  equal($('#testme').html(), multiRowText, "Multiple row value");
+  equal($('#testme').attr('rows'), 3, "Multiple row size");
+  var singleRowText = "blah";
+  updateValue('testme', singleRowText);
+  equal($('#testme').text(), singleRowText, "Single row value");
+  equal($('#testme').attr('rows'), 1, "Single row size");
+  var emptyText = "";
+  updateValue('testme', emptyText);
+  equal($('#testme').text(), emptyText, "Empty value");
+  equal($('#testme').attr('rows'), 1, "Empty size");
+  $('#testme').remove();
+});
+
+module("export.php");
+
+test("Test export.php availability check", function() {
+  $.ajaxSetup({ async: false });
+  expect(3);
+  $.post("/common/php/export.php", { test: "True" },
+    function(data) {
+      equal(data, "PASS", "Test call");
+    }
+  );
+  $.post("/common/php/export.php", { },
+    function(data) {
+      equal(data, "FAIL", "No arguments");
+    }
+  );
+  $.post("/common/php/export.php", { fakeName: "" },
+    function(data) {
+      equal(data, "FAIL", "Invalid arguments");
+    }
+  );
+});
+    });
+    </script>
+  </head>
+  <body>
+    <h1 id="qunit-header">QUnit example</h1>
+    <h2 id="qunit-banner"></h2>
+    <div id="qunit-testrunner-toolbar"></div>
+    <h2 id="qunit-userAgent"></h2>
+    <ol id="qunit-tests"></ol>
+    <div id="qunit-fixture">test markup, will be hidden</div>
+  </body>
+</html>

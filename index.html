@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Strict//EN">
+<html>
+	<head>
+		<title>
+			SQL Helper
+		</title>
+		<link rel="stylesheet" href="css/base.css" />
+		<script type="text/javascript" src="js/jquery1.7.1.min.js"></script>
+		<script type="text/javascript" src="js/base.js"></script>
+	</head>
+	<body>
+		<div id="top">
+			<div id="instructions">
+				This tool is for creating SQL for updating records.<br />
+				You need to enter the information below and then copy the resulting SQL into SQL Developer (or similar) to execute.
+			</div>
+		</div>
+		<div id="content">
+			<div id="left">
+				<div id="mainFormWrapper">
+					<form method="get" id="mainForm" action="index.html">
+						<table id="mainFormLayoutTable" width="100%">
+							<tr>
+								<td class="label" title="The table that the update will be run against">
+									Table Name:
+								</td>
+								<td colspan="2">
+									<input class="textInput" type="text" name="tableName" id="tableName" />
+								</td>
+							</tr>
+							<tr>
+								<td class="label" colspan="3">
+									Columns to Update:
+								</td>
+							</tr>
+							<tr id="columnLabels">
+								<td>&nbsp;</td>
+								<td class="columnNameColumn">Column Name</td>
+								<td>Column Value</td>
+							</tr>
+							<tr id="columnInfo0">
+								<td width="25">&nbsp;</td>
+								<td>
+									<input class="textInput" type="text" name="columnName0" id="columnName0" />
+								</td>
+								<td>
+									<input class="fullWidth" type="text" name="columnValue0" id="columnValue0" />
+								</td>
+							</tr>
+							<tr id="addAnotherColumn">
+								<td>&nbsp;</td>
+								<td colspan="2">
+									<a href="javascript: void(0)" onclick="addAnotherColumn();" id="addLink"><img src="images/add.png" alt="Add another column" title="Add another column" /></a>
+								</td>
+							</tr>
+							<tr>
+								<td class="label" title="Where clause is SQL that needs to include a column from the table targeted for update (the word 'where' is not needed)">
+									Where Clause:
+								</td>
+								<td colspan="2">
+									<textarea class="fullWidth" name="whereClause" id="whereClause" rows="8"></textarea>
+								</td>
+							</tr>
+							<tr>
+								<td>&nbsp;</td>
+								<td colspan="2">
+									<input type="checkbox" name="allRecords" id="allRecords" />
+									<label for="allRecords">Check here to allow empty where clause</label>
+								</td>
+							</tr>
+							<tr>
+								<td class="label" nowrap="true" title="The number of records that the update statement should be expected to affect">
+									# of Affected Records:
+								</td>
+								<td colspan="2">
+									<input class="textInput" type="text" name="expectedCount" id="expectedCount" />
+								</td>
+							</tr>
+						</table>
+						<a id="resetLink" href="index.html">Reset</a> &nbsp;&nbsp;
+						<a id="shareableLink" href="index.html" alt="Right-click for option to copy this link to the clipboard" title="Right-click for option to copy this link to the clipboard"><img id="linkImage" src="images/link.png" align="texttop" />Shareable Link</a>
+					</form>
+				</div>
+			</div>
+			<div id="right">
+				<div class="resultGroup">
+					<div class="header">
+						<span class="label collapser" data-collapseId="countStatement"><img src="images/collapse.png" alt="Collapse" title="Collapse" /> Count Statement</span>
+						<a href="javascript: selectTextareaText('countStatement')"><span class="selectAll"></span></a>
+						<a href="javascript: submitForm('countStatementForm')"><span class="exportStatement"></span></a>
+					</div>
+					<form name="countStatementForm" id="countStatementForm" method="post" action="/common/php/export.php">
+						<textarea name="contents" class="code" id="countStatement" wrap="off"></textarea>
+						<input name="fileName" type="hidden" value="countStatement.sql" />
+						<input name="contentType" type="hidden" value="text/plain" />
+					</form>
+				</div>
+				<div class="resultGroup">
+					<div class="header">
+						<span class="label collapser" data-collapseId="selectStatement"><img src="images/collapse.png" alt="Collapse" title="Collapse" /> Select Statement</span>
+						<a href="javascript: selectTextareaText('selectStatement')"><span class="selectAll"></span></a>
+						<a href="javascript: submitForm('selectStatementForm')"><span class="exportStatement"></span></a>
+					</div>
+					<form name="selectStatementForm" id="selectStatementForm" method="post" action="/common/php/export.php">
+						<textarea name="contents" class="code" id="selectStatement" wrap="off"></textarea>
+						<input name="fileName" type="hidden" value="selectStatement.sql" />
+						<input name="contentType" type="hidden" value="text/plain" />
+					</form>
+				</div>
+				<div class="resultGroup">
+					<div class="header">
+						<span class="label collapser" data-collapseId="plsqlBlock"><img src="images/collapse.png" alt="Collapse" title="Collapse" /> PL/SQL for Update</span>
+						<a href="javascript: selectTextareaText('plsqlBlock')"><span class="selectAll"></span></a>
+						<a href="javascript: submitForm('plsqlBlockForm')"><span class="exportStatement"></span></a>
+					</div>
+					<form name="plsqlBlockForm" id="plsqlBlockForm" method="post" action="/common/php/export.php">
+						<textarea name="contents" class="code" id="plsqlBlock" wrap="off"></textarea>
+						<input name="fileName" type="hidden" value="plsqlBlock.sql" />
+						<input name="contentType" type="hidden" value="text/plain" />
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
