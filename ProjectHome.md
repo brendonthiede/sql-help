@@ -1,0 +1,1 @@
+Dynamically generates PL/SQL to verify the number of records being updated before actually doing an update.  Promotes double checking of where clause.
